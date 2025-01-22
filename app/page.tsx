@@ -9,10 +9,22 @@ import { EmailStep } from "./components/EmailStep"
 import { Header } from "./components/Header"
 import { Footer } from "./components/Footer"
 
+interface Respuestas {
+  fechas: {
+    checkIn: Date | null;
+    checkOut: Date | null;
+  };
+  presupuesto: string;
+  zonas: string[];
+}
+
 export default function BuscadorHoteles() {
   const [step, setStep] = useState(0)
-  const [respuestas, setRespuestas] = useState({
-    fechas: "",
+  const [respuestas, setRespuestas] = useState<Respuestas>({
+    fechas: {
+      checkIn: null,
+      checkOut: null
+    },
     presupuesto: "",
     zonas: [],
   })
@@ -23,7 +35,7 @@ export default function BuscadorHoteles() {
   }
 
   const pasos = [
-    <FechasStep key="fechas" onSiguiente={siguientePaso} />,
+    <FechasStep key="fechas" onSiguiente={siguientePaso} respuestas={respuestas} />,
     <PresupuestoStep key="presupuesto" onSiguiente={siguientePaso} />,
     <ZonasStep key="zonas" onSiguiente={siguientePaso} />,
     <EmailStep key="email" respuestas={respuestas} />,
