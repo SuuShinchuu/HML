@@ -23,7 +23,7 @@ export default function BuscadorHoteles() {
   }
 
   const pasos = [
-    <FechasStep key="fechas" onSiguiente={siguientePaso} />,
+  //  <FechasStep key="fechas" onSiguiente={siguientePaso} />,
     <PresupuestoStep key="presupuesto" onSiguiente={siguientePaso} />,
     <ZonasStep key="zonas" onSiguiente={siguientePaso} />,
     <EmailStep key="email" respuestas={respuestas} />,
