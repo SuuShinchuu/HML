@@ -42,27 +42,33 @@ export function EmailStep({ respuestas }: { respuestas: any }) {
       console.log("Email guardado exitosamente.")
 
       // Nueva funcionalidad para guardar en Airtable
-      const response = await fetch(`https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/Emails`, {
+      const airtableUrl = `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/Emails`;
+      const body = JSON.stringify({
+        fields: {
+          Email: email, // Guardar el email en la columna "Email"
+        },
+      });
+
+      console.log("URL de Airtable:", airtableUrl);
+      console.log("Cuerpo de la solicitud:", body);
+
+      const response = await fetch(airtableUrl, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          fields: {
-            Email: email, // Guardar el email en la columna "Email"
-          },
-        }),
-      })
+        body: body,
+      });
 
       if (!response.ok) {
-        throw new Error('Error al guardar en Airtable')
+        throw new Error('Error al guardar en Airtable');
       }
 
-      setMensaje("¡Gracias! Te enviaremos pronto las mejores opciones de hoteles.")
+      setMensaje("¡Gracias! Te enviaremos pronto las mejores opciones de hoteles.");
     } catch (error) {
-      console.error("Error en el proceso de guardar el email:", error) // Mostrar el error en consola
-      setMensaje("Hubo un error al guardar tu información. Por favor, intenta de nuevo.")
+      console.error("Error en el proceso de guardar el email:", error);
+      setMensaje("Hubo un error al guardar tu información. Por favor, intenta de nuevo.");
     }
   }
 
