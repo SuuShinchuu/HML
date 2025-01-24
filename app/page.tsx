@@ -44,7 +44,7 @@ export default function BuscadorHoteles() {
       />
       <div className="absolute inset-0 bg-black/40 z-10" />
       <div className="relative z-20 flex flex-col min-h-screen">
-        <Header />
+       {/* <Header /> */}
         <main className="container mx-auto px-4 py-8 flex-grow">
           <h1 className="text-4xl md:text-6xl font-bold text-center mb-8">Hoteles Medellín</h1>
           <p className="text-xl text-center mb-12">
