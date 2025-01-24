@@ -8,6 +8,7 @@ import { ZonasStep } from "./components/ZonasStep"
 import { EmailStep } from "./components/EmailStep"
 import { Header } from "./components/Header"
 import { Footer } from "./components/Footer"
+import { IntroStep } from "./components/IntroStep"
 
 export default function BuscadorHoteles() {
   const [step, setStep] = useState(0)
@@ -23,7 +24,7 @@ export default function BuscadorHoteles() {
   }
 
   const pasos = [
-  //  <FechasStep key="fechas" onSiguiente={siguientePaso} />,
+    <IntroStep key="intro" onSiguiente={siguientePaso} />,
     <PresupuestoStep key="presupuesto" onSiguiente={siguientePaso} />,
     <ZonasStep key="zonas" onSiguiente={siguientePaso} />,
     <EmailStep key="email" respuestas={respuestas} />,
@@ -42,9 +43,9 @@ export default function BuscadorHoteles() {
         }}
       />
       <div className="absolute inset-0 bg-black/40 z-10" />
-      <div className="relative z-20">
+      <div className="relative z-20 flex flex-col min-h-screen">
         <Header />
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto px-4 py-8 flex-grow">
           <h1 className="text-4xl md:text-6xl font-bold text-center mb-8">Hoteles Medellín</h1>
           <p className="text-xl text-center mb-12">
             Encuentra el hotel perfecto para tu estadía en la Ciudad de la Eterna Primavera
