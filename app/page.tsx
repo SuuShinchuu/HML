@@ -7,7 +7,7 @@ import { PresupuestoStep } from "./components/PresupuestoStep"
 import { ZonasStep } from "./components/ZonasStep"
 import { EmailStep } from "./components/EmailStep"
 import { Header } from "./components/Header"
-import { Footer } from "./components/Footer"
+import Footer from "./components/Footer"
 import { IntroStep } from "./components/IntroStep"
 
 export default function BuscadorHoteles() {
@@ -64,7 +64,7 @@ export default function BuscadorHoteles() {
             </AnimatePresence>
           </div>
         </main>
-        <Footer />
+        <Footer className="py-2 text-sm" />
       </div>
     </div>
   )
