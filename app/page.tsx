@@ -18,7 +18,7 @@ export default function BuscadorHoteles() {
     zonas: [],
   })
 
-  const siguientePaso = (respuesta: any) => {
+  const siguientePaso = (respuesta: { fechas?: string; presupuesto?: string; zonas?: string[] }) => {
     setRespuestas({ ...respuestas, ...respuesta })
     setStep(step + 1)
   }

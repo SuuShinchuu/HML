@@ -13,11 +13,62 @@ export function EmailStep({ respuestas }: { respuestas: any }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      await guardarEmail(email, respuestas)
+      console.log("Iniciando el proceso de guardar el email.")
+      console.log("Email:", email);
+      console.log("Respuestas:", respuestas);
+      console.log("Tipo de respuestas:", typeof respuestas);
+      console.log("Es objeto plano:", isPlainObject(respuestas));
+
+      // Validar que el email sea una cadena y respuestas sea un objeto plano
+      if (typeof email !== 'string' || !email) {
+        throw new Error("El email debe ser una cadena no vacía.")
+      }
+      if (typeof respuestas !== 'object' || respuestas === null || !isPlainObject(respuestas)) {
+        throw new Error("Las respuestas deben ser un objeto plano.")
+      }
+
+      // Limpiar el objeto respuestas
+      const cleanedRespuestas = Object.fromEntries(
+        Object.entries(respuestas).filter(([key, value]) => 
+          typeof value === 'string' || 
+          typeof value === 'number' || 
+          Array.isArray(value) // Permitir arreglos
+        )
+      );
+
+      console.log("Respuestas limpias:", cleanedRespuestas);
+
+      await guardarEmail(email, cleanedRespuestas)
+      console.log("Email guardado exitosamente.")
+
+      // Nueva funcionalidad para guardar en Airtable
+      const response = await fetch(`https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/Emails`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fields: {
+            Email: email, // Guardar el email en la columna "Email"
+          },
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Error al guardar en Airtable')
+      }
+
       setMensaje("¡Gracias! Te enviaremos pronto las mejores opciones de hoteles.")
     } catch (error) {
+      console.error("Error en el proceso de guardar el email:", error) // Mostrar el error en consola
       setMensaje("Hubo un error al guardar tu información. Por favor, intenta de nuevo.")
     }
+  }
+
+  // Función para verificar si un objeto es plano
+  const isPlainObject = (obj: any): boolean => {
+    return Object.prototype.toString.call(obj) === '[object Object]' && Object.getPrototypeOf(obj) === Object.prototype;
   }
 
   return (
