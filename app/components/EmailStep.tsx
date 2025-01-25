@@ -53,7 +53,9 @@ export function EmailStep({ respuestas }: { respuestas: any }) {
       const body = JSON.stringify({
         fields: {
           Email: email, // Guardar el email en la columna "Email"
-        },
+          Presupuesto : cleanedRespuestas.presupuesto,
+          Zonas : cleanedRespuestas.zonas,
+       },
       });
 
       console.log("URL de Airtable:", airtableUrl);
