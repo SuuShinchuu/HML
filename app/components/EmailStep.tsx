@@ -13,55 +13,55 @@ export function EmailStep({ respuestas }: { respuestas: any }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      // Verificar las variables de entorno
-      /*
-      console.log("Airtable Base ID:", process.env.REACT_APP_AIRTABLE_BASE_ID);
-      console.log("Airtable API Key:", process.env.REACT_APP_AIRTABLE_API_KEY);
-      console.log("My own log")
-      console.log("Iniciando el proceso de guardar el email.")
-      console.log("Email:", email);
-      console.log("Respuestas:", respuestas);
-      console.log("Tipo de respuestas:", typeof respuestas);
-      console.log("Es objeto plano:", isPlainObject(respuestas));
-      */
-      // Validar que el email sea una cadena y respuestas sea un objeto plano
+      // Validar que el email sea una cadena no vacía
       if (typeof email !== 'string' || !email) {
         throw new Error("El email debe ser una cadena no vacía.")
       }
+
+      // Validar que las respuestas sean un objeto plano
       if (typeof respuestas !== 'object' || respuestas === null || !isPlainObject(respuestas)) {
         throw new Error("Las respuestas deben ser un objeto plano.")
       }
 
       // Limpiar el objeto respuestas
       const cleanedRespuestas = Object.fromEntries(
-        Object.entries(respuestas).filter(([key, value]) => 
-          typeof value === 'string' || 
-          typeof value === 'number' || 
+        Object.entries(respuestas).filter(([key, value]) =>
+          typeof value === 'string' ||
+          typeof value === 'number' ||
           Array.isArray(value) // Permitir arreglos
         )
       );
 
-      console.log("Respuestas limpias:", cleanedRespuestas);
+      // Convertir "Presupuesto" a número si es una cadena
+      if (cleanedRespuestas.presupuesto && typeof cleanedRespuestas.presupuesto === 'string') {
+        cleanedRespuestas.presupuesto = parseFloat(cleanedRespuestas.presupuesto);
+      }
 
-      await guardarEmail(email, cleanedRespuestas)
-      console.log("Email guardado exitosamente.")
+      // Convertir "Zonas" a una cadena separada por comas si es un array
+      if (Array.isArray(cleanedRespuestas.zonas)) {
+        cleanedRespuestas.zonas = cleanedRespuestas.zonas.join(", ");
+      }
 
-      // Nueva funcionalidad para guardar en Airtable
-      const appId = process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID;      
+      console.log("Cuerpo limpio antes de enviar a Airtable:", cleanedRespuestas);
+
+      // Variables de entorno y URL de Airtable
+      const appId = process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID;
       const apiKey = process.env.NEXT_PUBLIC_AIRTABLE_API_KEY;
       const airtableUrl = `https://api.airtable.com/v0/${appId}/Emails`;
+
+      // Crear el cuerpo de la solicitud
       const body = JSON.stringify({
         fields: {
-          Email: email, // Guardar el email en la columna "Email"
-          Presupuesto : cleanedRespuestas.presupuesto,
-          Zonas : cleanedRespuestas.zonas,
-       },
+          Email: email,
+          Presupuesto: cleanedRespuestas.presupuesto,
+          Zonas: cleanedRespuestas.zonas,
+        },
       });
 
       console.log("URL de Airtable:", airtableUrl);
       console.log("Cuerpo de la solicitud:", body);
-      console.log("Airtable Base ID:", process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID);
-      console.log("Airtable API Key:", process.env.NEXT_PUBLIC_AIRTABLE_API_KEY);
+
+      // Hacer la solicitud a Airtable
       const response = await fetch(airtableUrl, {
         method: 'POST',
         headers: {
@@ -72,7 +72,7 @@ export function EmailStep({ respuestas }: { respuestas: any }) {
       });
 
       if (!response.ok) {
-        throw new Error('Error al guardar en Airtable');
+        throw new Error("Error al guardar en Airtable");
       }
 
       setMensaje("¡Gracias! Te enviaremos pronto las mejores opciones de hoteles.");
@@ -108,4 +108,3 @@ export function EmailStep({ respuestas }: { respuestas: any }) {
     </motion.div>
   )
 }
-
