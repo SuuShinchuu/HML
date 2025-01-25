@@ -47,8 +47,8 @@ export function EmailStep({ respuestas }: { respuestas: any }) {
       console.log("Email guardado exitosamente.")
 
       // Nueva funcionalidad para guardar en Airtable
-      const appId = process.env.AIRTABLE_BASE_ID;      
-      const apiKey = process.env.AIRTABLE_API_KEY;
+      const appId = process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID;      
+      const apiKey = process.env.NEXT_PUBLIC_AIRTABLE_API_KEY;
       const airtableUrl = `https://api.airtable.com/v0/${appId}/Emails`;
       const body = JSON.stringify({
         fields: {
@@ -58,8 +58,8 @@ export function EmailStep({ respuestas }: { respuestas: any }) {
 
       console.log("URL de Airtable:", airtableUrl);
       console.log("Cuerpo de la solicitud:", body);
-      console.log("Airtable Base ID:", process.env.AIRTABLE_BASE_ID);
-      console.log("Airtable API Key:", process.env.AIRTABLE_API_KEY);
+      console.log("Airtable Base ID:", process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID);
+      console.log("Airtable API Key:", process.env.NEXT_PUBLIC_AIRTABLE_API_KEY);
       const response = await fetch(airtableUrl, {
         method: 'POST',
         headers: {
