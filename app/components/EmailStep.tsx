@@ -14,6 +14,7 @@ export function EmailStep({ respuestas }: { respuestas: any }) {
     e.preventDefault()
     try {
       // Verificar las variables de entorno
+      /*
       console.log("Airtable Base ID:", process.env.REACT_APP_AIRTABLE_BASE_ID);
       console.log("Airtable API Key:", process.env.REACT_APP_AIRTABLE_API_KEY);
       console.log("My own log")
@@ -22,7 +23,7 @@ export function EmailStep({ respuestas }: { respuestas: any }) {
       console.log("Respuestas:", respuestas);
       console.log("Tipo de respuestas:", typeof respuestas);
       console.log("Es objeto plano:", isPlainObject(respuestas));
-
+      */
       // Validar que el email sea una cadena y respuestas sea un objeto plano
       if (typeof email !== 'string' || !email) {
         throw new Error("El email debe ser una cadena no vacía.")
