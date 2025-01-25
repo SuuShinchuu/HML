@@ -13,6 +13,10 @@ export function EmailStep({ respuestas }: { respuestas: any }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
+      // Verificar las variables de entorno
+      console.log("Airtable Base ID:", process.env.REACT_APP_AIRTABLE_BASE_ID);
+      console.log("Airtable API Key:", process.env.REACT_APP_AIRTABLE_API_KEY);
+      console.log("My own log")
       console.log("Iniciando el proceso de guardar el email.")
       console.log("Email:", email);
       console.log("Respuestas:", respuestas);
@@ -42,7 +46,7 @@ export function EmailStep({ respuestas }: { respuestas: any }) {
       console.log("Email guardado exitosamente.")
 
       // Nueva funcionalidad para guardar en Airtable
-      const airtableUrl = `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/Emails`;
+      const airtableUrl = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Emails`;
       const body = JSON.stringify({
         fields: {
           Email: email, // Guardar el email en la columna "Email"
@@ -55,7 +59,7 @@ export function EmailStep({ respuestas }: { respuestas: any }) {
       const response = await fetch(airtableUrl, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
+          Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
           'Content-Type': 'application/json',
         },
         body: body,
